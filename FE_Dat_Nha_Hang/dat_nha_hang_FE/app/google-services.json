@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "561409638488",
+    "project_id": "datlichkham-f0ca9",
+    "storage_bucket": "datlichkham-f0ca9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561409638488:android:3d62d3cdc159de9d888a2d",
+        "android_client_info": {
+          "package_name": "com.example.dat_lich_kham_fe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwrcgcA7Lpzr35-KdjEYd-bAozRJRR4Sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561409638488:android:d065609c79ecdd24888a2d",
+        "android_client_info": {
+          "package_name": "com.example.nhom1_fe_datnhahang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwrcgcA7Lpzr35-KdjEYd-bAozRJRR4Sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

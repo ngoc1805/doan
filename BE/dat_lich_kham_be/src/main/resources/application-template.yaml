@@ -1,0 +1,18 @@
+ktor:
+  application:
+    modules:
+      - com.example.ApplicationKt.module
+  deployment:
+    port: 8080
+
+datasource:
+  driver: "com.mysql.cj.jdbc.Driver"
+  url: "jdbc:mysql://localhost:3306/YOUR_DATABASE_NAME"
+  user: "YOUR_USERNAME"
+  password: "YOUR_PASSWORD"
+
+jwt:
+  domain: "https://your-app.local/"
+  audience: "datlichkham-api"
+  realm: "datlichkham"
+  secret: "YOUR_JWT_SECRET_KEY_HERE"

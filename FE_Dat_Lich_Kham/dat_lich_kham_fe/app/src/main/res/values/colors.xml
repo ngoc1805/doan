@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <resources>
+      <color name="purple_200">#FFBB86FC</color>
+      <color name="purple_500">#FF6200EE</color>
+      <color name="purple_700">#FF3700B3</color>
+      <color name="teal_200">#FF03DAC5</color>
+      <color name="teal_700">#FF018786</color>
+      <color name="black">#FF000000</color>
+      <color name="white">#FFFFFFFF</color>
+      <color name="darkblue">#0856a8</color>
+      <color name="cam">#c7851a</color>
+      <color name="maudo">#a3022d</color>
+      <color name="mauhong">#f2687f</color>
+
+      <!-- Widget colors -->
+      <color name="primary_color">#2196F3</color>
+      <color name="text_primary">#212121</color>
+      <color name="text_secondary">#757575</color>
+      <color name="icon_tint">#9E9E9E</color>
+      <color name="price_color">#4CAF50</color>
+
+      <!-- Status colors -->
+      <color name="status_scheduled">#2196F3</color>
+      <color name="status_completed">#4CAF50</color>
+      <color name="status_cancelled">#F44336</color>
+      <color name="status_waiting">#FF9800</color>
+
+      <!-- Background colors -->
+      <color name="widget_background">#FFFFFF</color>
+      <color name="widget_shadow">#E0E0E0</color>
+      <color name="code_background">#EEEEEE</color>
+      <color name="status_background">#E3F2FD</color>
+  </resources>
