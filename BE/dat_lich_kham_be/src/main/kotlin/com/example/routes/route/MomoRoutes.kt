@@ -352,7 +352,7 @@ fun Application.momoRoutes() {
                     ?: qrReq.orderInfo
 
                 val redirectUrl = "momoapp://callback"
-                val ipnUrl = "https://712319e2e363.ngrok-free.app/api/momo/ipn"
+                val ipnUrl = "https://9770459de77b.ngrok-free.app/api/momo/ipn"
 
                 // XÁC ĐỊNH requestType
                 // captureWallet = Thanh toán qua ví MoMo (QR nhảy thẳng vào app)

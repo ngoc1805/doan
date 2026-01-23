@@ -10,13 +10,14 @@ class ResultDAO(id: EntityID<Int>) : IntEntity(id) {
 
     var appointmentId by Results.appointmentId
     var comment by Results.comment
+    var dietRecommendation by Results.dietRecommendation
 
-    fun toModel() : com.example.models.Result{
+    fun toModel(): com.example.models.Result {
         return com.example.models.Result(
             id = id.value,
             appointmentId = appointmentId.value,
-            comment = comment
-
+            comment = comment,
+            dietRecommendation = dietRecommendation
         )
     }
 }

@@ -5,13 +5,10 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Inpatient(
+data class MealSkipDate(
     val id: Int,
-    val userId: Int,
-    val appointmentId: Int?,
-    val address: String?,
-    val admissionDate: LocalDate?,
-    val dischargeDate: LocalDate?,
-    val status: String,
+    val cycleId: Int,
+    val inpatientId: Int,
+    val skipDate: LocalDate,
     val createdAt: Instant
 )

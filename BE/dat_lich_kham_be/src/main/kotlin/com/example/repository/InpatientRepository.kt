@@ -1,5 +1,6 @@
 package com.example.repository
 
+import com.example.Tables.Appointments
 import com.example.Tables.Inpatients
 import com.example.dao.InpatientDAO
 import com.example.dao.UsersDAO
@@ -61,9 +62,16 @@ class InpatientRepository {
         InpatientListResponse(inpatients)
     }
 
+    //    fun dischargeInpatientById(id: Int): Boolean = transaction {
+//        val inpatient = InpatientDAO.findById(id)
+//        if (inpatient == null) return@transaction false
+//        inpatient.status = "Đã xuất viện"
+//        true
+//    }
+    //
     fun dischargeInpatientById(id: Int): Boolean = transaction {
-        val inpatient = InpatientDAO.findById(id)
-        if (inpatient == null) return@transaction false
+        val inpatient = InpatientDAO.findById(id) ?: return@transaction false
+        inpatient.dischargeDate = java.time.LocalDate.now()
         inpatient.status = "Đã xuất viện"
         true
     }
@@ -75,4 +83,21 @@ class InpatientRepository {
         inpatient.status = "Đã nhập viện"
         true
     }
+}
+//
+fun createInpatientWithAppointment(userId: Int, appointmentId: Int?): Int = transaction {
+    val inpatient = InpatientDAO.new {
+        this.userId = EntityID(userId, Inpatients)
+        this.appointmentId = appointmentId?.let { EntityID(it, Appointments) }
+        this.status = "Đang chờ"
+    }
+    inpatient.id.value
+}
+//
+fun admitInpatient(id: Int, address: String): Boolean = transaction {
+    val inpatient = InpatientDAO.findById(id) ?: return@transaction false
+    inpatient.address = address
+    inpatient.admissionDate = java.time.LocalDate.now()
+    inpatient.status = "Đã nhập viện"
+    true
 }
