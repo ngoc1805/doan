@@ -21,7 +21,7 @@ class ResultViewModel: ScreenModel {
     private val _isSuccess = MutableStateFlow<Boolean?>(null)
     val isSuccess: StateFlow<Boolean?> = _isSuccess
 
-    fun createResult(appointmentId: Int, comment: String) {
+    fun createResult(appointmentId: Int, comment: String, dietRecommendation: String? = null) {
         // Kiểm tra validation
         if (comment.trim().isEmpty()) {
             _resultMessage.value = "Vui lòng nhập nhận xét cho kết quả khám"
@@ -40,7 +40,11 @@ class ResultViewModel: ScreenModel {
                 _isLoading.value = true
                 _resultMessage.value = "Đang tạo kết quả khám..."
 
-                val response = resultRepository.createResult(appointmentId, comment.trim())
+                val response = resultRepository.createResult(
+                    appointmentId,
+                    comment.trim(),
+                    dietRecommendation?.trim()?.takeIf { it.isNotEmpty() }
+                )
 
                 if (response.isSuccessful) {
                     val responseBody = response.body()

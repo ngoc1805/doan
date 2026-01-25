@@ -14,6 +14,8 @@ data class InpatientItem(
     val cccd: String,
     val hometown: String,
     val address: String,
+    val admissionDate: String?, // Ngày nhập viện
+    val dischargeDate: String?, // Ngày xuất viện
     val status: String,
     val createAt: String
 )

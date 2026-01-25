@@ -50,6 +50,7 @@ class MedicalExaminationScreen(
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         var comment by remember { mutableStateOf(TextFieldValue("")) }
+        var dietRecommendation by remember { mutableStateOf(TextFieldValue("")) }
         var result by remember { mutableStateOf(TextFieldValue("")) }
         var isDisplay by remember { mutableStateOf(false) }
         val currentDate = LocalDate.now().toString()
@@ -104,10 +105,11 @@ class MedicalExaminationScreen(
             }
         }
 
-        // Reset comment sau khi tạo thành công
+        // Reset comment và dietRecommendation sau khi tạo thành công
         LaunchedEffect(isSuccess) {
             if (isSuccess == true) {
                 comment = TextFieldValue("")
+                dietRecommendation = TextFieldValue("")
                 // Refresh danh sách file sau khi tạo kết quả thành công
                 fileViewModel.listFileByAppointmentId(id)
             }
@@ -369,6 +371,21 @@ class MedicalExaminationScreen(
                             }
                         }
 
+                        // Chỉ định ăn uống - trường tuỳ chọn
+                        OutlinedTextField(
+                            value = dietRecommendation,
+                            onValueChange = { dietRecommendation = it },
+                            label = { Text("Chỉ định ăn uống (tuỳ chọn)") },
+                            placeholder = { Text("VD: Ăn nhiều rau, hoa quả. Tránh đồ cay nóng...") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color(0xFF1976D2),
+                                unfocusedBorderColor = Color.Gray
+                            )
+                        )
+
                         // Kết quả khám & lấy file - giữ nguyên
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -500,7 +517,7 @@ class MedicalExaminationScreen(
                                 // Nút "Gửi kết quả" bên phải
                                 Button(
                                     onClick = {
-                                        resultViewModel.createResult(id, comment.text)
+                                        resultViewModel.createResult(id, comment.text, dietRecommendation.text)
                                         appointmentViewModel.updateStatus(id,"Đã hoàn tất")
                                         notificationViewModel.postNotification(
                                             userId,

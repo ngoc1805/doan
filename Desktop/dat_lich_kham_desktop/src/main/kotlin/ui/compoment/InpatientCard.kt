@@ -28,6 +28,8 @@ fun InpatientCard(
     cccd: String,
     hometown: String,
     address: String,
+    admissionDate: String?, // Ngày nhập viện
+    dischargeDate: String?, // Ngày xuất viện
     status: String,
     createAt: String,
     displayApproveButton: Boolean = false,
@@ -136,12 +138,32 @@ fun InpatientCard(
                     iconColor = Color(0xFF06B6D4)
                 )
 
-                InfoRow(
-                    icon = Icons.Default.DateRange,
-                    label = "Ngày nhập viện",
-                    value = formatDateTime(createAt),
-                    iconColor = Color(0xFF6366F1)
-                )
+                // Hiển thị ngày nhập viện hoặc ngày tạo yêu cầu
+                if (status == "Đã nhập viện" || status == "Đã xuất viện") {
+                    InfoRow(
+                        icon = Icons.Default.DateRange,
+                        label = "Ngày nhập viện",
+                        value = admissionDate?.let { formatDateTime(it) } ?: "Chưa có",
+                        iconColor = Color(0xFF6366F1)
+                    )
+                } else {
+                    InfoRow(
+                        icon = Icons.Default.DateRange,
+                        label = "Ngày tạo yêu cầu",
+                        value = formatDateTime(createAt),
+                        iconColor = Color(0xFF6366F1)
+                    )
+                }
+
+                // Hiển thị ngày xuất viện cho bệnh nhân đã xuất viện
+                if (status == "Đã xuất viện" && dischargeDate != null) {
+                    InfoRow(
+                        icon = Icons.Default.ExitToApp,
+                        label = "Ngày xuất viện",
+                        value = formatDateTime(dischargeDate),
+                        iconColor = Color(0xFFEF4444)
+                    )
+                }
             }
 
             // Buttons

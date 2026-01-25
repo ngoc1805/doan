@@ -8,8 +8,12 @@ import retrofit2.Response
 class ResultRepository {
     val resultApi = RetrofitInstance.resultApi
 
-    suspend fun createResult(appointmentId: Int, comment: String) : Response<BaseResponse> {
-        val request = ResultRequest(appointmentId, comment)
+    suspend fun createResult(
+        appointmentId: Int,
+        comment: String,
+        dietRecommendation: String? = null
+    ): Response<BaseResponse> {
+        val request = ResultRequest(appointmentId, comment, dietRecommendation)
         return resultApi.createResult(request)
     }
 }

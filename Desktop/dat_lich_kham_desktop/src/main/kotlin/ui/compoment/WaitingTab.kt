@@ -139,6 +139,8 @@ fun WaitingTab() {
                         cccd = inpatient.cccd,
                         hometown = inpatient.hometown,
                         address = inpatient.address,
+                        admissionDate = inpatient.admissionDate,
+                        dischargeDate = inpatient.dischargeDate,
                         status = inpatient.status,
                         createAt = inpatient.createAt,
                         displayApproveButton = true,
