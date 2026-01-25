@@ -55,7 +55,7 @@ fun Route.inpatientRoutes(inpatientService: InpatientService){
                 return@post
             }
             // Tạo mới
-            val newInpatientId = inpatientService.createInpatient(request.userId)
+            val newInpatientId = inpatientService.createInpatient(request.userId, request.appointmentId)
             call.respond(
                 BaseResponse(
                     success = true,
@@ -75,7 +75,7 @@ fun Route.inpatientRoutes(inpatientService: InpatientService){
             val response = inpatientService.getInpatientsByStatus(status)
             call.respond(response)
         }
-            //
+        //
         post("/inpatients/discharge") {
             val req = call.receive<UpdateStatusInpatient>()
             val success = inpatientService.dischargeInpatientById(req.id)

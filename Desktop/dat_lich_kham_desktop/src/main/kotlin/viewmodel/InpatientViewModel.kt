@@ -26,14 +26,14 @@ class InpatientViewModel: ScreenModel {
 
     var inpatients by mutableStateOf<List<InpatientItem>>(emptyList())
 
-    fun createInpatient(userId: Int) {
+    fun createInpatient(userId: Int, appointmentId: Int? = null) {
         screenModelScope.launch(Dispatchers.Default) {
             try {
                 _isLoading.value = true
                 _resultMessage.value = ""
                 _isSuccess.value = null
 
-                val response = inpatientRepository.creatInpatient(userId)
+                val response = inpatientRepository.creatInpatient(userId, appointmentId)
 
                 if (response.isSuccessful) {
                     val body = response.body()

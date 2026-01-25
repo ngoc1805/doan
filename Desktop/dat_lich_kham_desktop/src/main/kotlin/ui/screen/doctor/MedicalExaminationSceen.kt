@@ -450,8 +450,8 @@ class MedicalExaminationScreen(
                                                 _resultMessage.value = "Vui lòng lấy file kết quả trước khi chuyển nội trú"
                                             }
                                         } else {
-                                            // Gọi API tạo inpatient
-                                            inpatientViewModel.createInpatient(userId)
+                                            // Gọi API tạo inpatient với appointmentId
+                                            inpatientViewModel.createInpatient(userId, id)
 
                                             // Nếu thành công, gửi thông báo cho bệnh nhân
                                             if (inpatientSuccess == true) {

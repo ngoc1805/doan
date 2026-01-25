@@ -12,8 +12,8 @@ class InpatientService(private val repo: InpatientRepository = InpatientReposito
         return repo.getInpatientAddress(userId, status)
     }
 
-    fun createInpatient(userId: Int): Int {
-        return repo.createInpatient(userId)
+    fun createInpatient(userId: Int, appointmentId: Int? = null): Int {
+        return repo.createInpatient(userId, appointmentId)
     }
 
     fun getInpatientsByStatus(status: String): InpatientListResponse {

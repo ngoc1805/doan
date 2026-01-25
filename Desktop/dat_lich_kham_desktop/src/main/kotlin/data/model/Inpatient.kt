@@ -3,6 +3,7 @@ package data.model
 
 data class InpatientRequest(
     val userId: Int,
+    val appointmentId: Int?,
 )
 
 data class InpatientItem(

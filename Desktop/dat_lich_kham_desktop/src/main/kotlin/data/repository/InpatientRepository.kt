@@ -7,8 +7,8 @@ import retrofit2.Response
 class InpatientRepository {
     val inpatientApi = RetrofitInstance.inpatientApi
 
-    suspend fun creatInpatient(userId: Int) : Response<BaseResponse>{
-        val request = InpatientRequest(userId)
+    suspend fun creatInpatient(userId: Int, appointmentId: Int? = null): Response<BaseResponse> {
+        val request = InpatientRequest(userId, appointmentId)
         return inpatientApi.createInpatient(request)
     }
 

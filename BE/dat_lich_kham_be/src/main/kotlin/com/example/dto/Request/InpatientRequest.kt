@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InpatientRequest(
     val userId: Int,
+    val appointmentId: Int? = null // Thêm appointmentId
 )
 
 @Serializable

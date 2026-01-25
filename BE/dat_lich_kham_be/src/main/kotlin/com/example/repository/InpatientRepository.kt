@@ -27,9 +27,10 @@ class InpatientRepository {
         }.firstOrNull()?.address
     }
 
-    fun createInpatient(userId: Int): Int = transaction {
+    fun createInpatient(userId: Int, appointmentId: Int? = null): Int = transaction {
         val inpatient = InpatientDAO.new {
             this.userId = EntityID(userId, Inpatients)
+            this.appointmentId = appointmentId?.let { EntityID(it, Appointments) }
             this.status = "Đang chờ"
         }
         inpatient.id.value
@@ -82,6 +83,7 @@ class InpatientRepository {
         val inpatient = InpatientDAO.findById(id)
         if (inpatient == null) return@transaction false
         inpatient.address = address
+        inpatient.admissionDate = java.time.LocalDate.now() // Đặt ngày nhập viện
         inpatient.status = "Đã nhập viện"
         true
     }
