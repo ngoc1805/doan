@@ -33,7 +33,8 @@ fun Route.resultRoute(service: ResultService = ResultService()) {
             val resultJson = Json.encodeToJsonElement(mapOf(
                 "id" to resultDao.id.value,
                 "appointmentId" to resultDao.appointmentId.value,
-                "comment" to resultDao.comment
+                "comment" to resultDao.comment,
+                "dietRecommendation" to resultDao.dietRecommendation
             ))
             call.respond(
                 BaseResponse(

@@ -55,6 +55,8 @@ class InpatientRepository {
                     cccd = decryptedCccd,
                     hometown = decryptedHometown,
                     address = inpatientDao.address ?: "",
+                    admissionDate = inpatientDao.admissionDate?.toKotlinxLocalDate(),
+                    dischargeDate = inpatientDao.dischargeDate?.toKotlinxLocalDate(),
                     status = inpatientDao.status,
                     createAt = inpatientDao.createdAt.toKotlinxInstant()
                 )

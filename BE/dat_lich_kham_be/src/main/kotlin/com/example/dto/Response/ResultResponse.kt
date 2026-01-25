@@ -8,6 +8,7 @@ data class ResultItem(
     val appointmentId: Int,
     val fullName: String,
     val comment: String,
+    val dietRecommendation: String?, // Chỉ định ăn uống
     val resultFiles : List<ResultFileItem>,
     val examDate: LocalDate
 )

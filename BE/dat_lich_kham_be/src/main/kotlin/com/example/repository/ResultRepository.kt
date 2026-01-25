@@ -42,6 +42,7 @@ class ResultRepository {
                     appointmentId = appDao.id.value,
                     fullName = decryptedFullName,
                     comment = resultDao.comment,
+                    dietRecommendation = resultDao.dietRecommendation,
                     resultFiles = resultFiles,
                     examDate = kotlinx.datetime.LocalDate.parse(appDao.examDate.toString())
                 )
@@ -53,6 +54,7 @@ class ResultRepository {
         ResultDAO.new {
             appointmentId = EntityID(request.appointmentId, Appointments)
             comment = request.comment
+            dietRecommendation = request.dietRecommendation
         }
     }
 }
