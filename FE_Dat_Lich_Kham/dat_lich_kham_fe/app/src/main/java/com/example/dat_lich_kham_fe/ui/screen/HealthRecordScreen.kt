@@ -182,6 +182,7 @@ fun HealthRecordScreen(
                             appointmentId = result.appointmentId,
                             fullName = result.fullName,
                             comment = result.comment,
+                            dietRecommendation = result.dietRecommendation,
                             resultFiles = result.resultFiles,
                             examDate = result.examDate,
                             onClicked = {
@@ -190,14 +191,16 @@ fun HealthRecordScreen(
                                 val encodedResultFiles = URLEncoder.encode(resultFilesJson, StandardCharsets.UTF_8.toString())
                                 val encodedFullName = URLEncoder.encode(result.fullName, StandardCharsets.UTF_8.toString())
                                 val encodedComment = URLEncoder.encode(result.comment, StandardCharsets.UTF_8.toString())
+                                val encodedDietRecommendation = URLEncoder.encode(result.dietRecommendation ?: "", StandardCharsets.UTF_8.toString())
                                 val encodedExamDate = URLEncoder.encode(result.examDate, StandardCharsets.UTF_8.toString())
 
                                 navController.navigate(
                                     "ExaminationResultScreen/${result.appointmentId}/" +
-                                        "$encodedFullName/" +
-                                        "$encodedComment/" +
-                                        "$encodedResultFiles/" +
-                                        "$encodedExamDate"
+                                            "$encodedFullName/" +
+                                            "$encodedComment/" +
+                                            "$encodedDietRecommendation/" +
+                                            "$encodedResultFiles/" +
+                                            "$encodedExamDate"
                                 )
                             }
                         )

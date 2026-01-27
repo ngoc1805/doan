@@ -49,6 +49,7 @@ fun ResultCard(
     appointmentId: Int,
     fullName: String,
     comment: String,
+    dietRecommendation: String?,
     resultFiles : List<ResultFileItem>,
     examDate: String,
     onClicked: () -> Unit = {},

@@ -113,7 +113,7 @@ fun AppnavHost(
             )
         }
         composable("PaymentScreen/{doctor_id}/{examDate}/{examTime}") {
-            backStackEntry ->
+                backStackEntry ->
             val doctorId = backStackEntry.arguments?.getString("doctor_id")?.toInt() ?: 0
             val examDate = backStackEntry.arguments?.getString("examDate") ?: ""
             val examTime = backStackEntry.arguments?.getString("examTime") ?: ""
@@ -207,16 +207,18 @@ fun AppnavHost(
             HealthRecordScreen(navController)
         }
         //
-        composable("ExaminationResultScreen/{appointmentId}/{fullName}/{comment}/{resultFiles}/{examDate}") { backStackEntry ->
+        composable("ExaminationResultScreen/{appointmentId}/{fullName}/{comment}/{dietRecommendation}/{resultFiles}/{examDate}") { backStackEntry ->
             val appointmentId = backStackEntry.arguments?.getString("appointmentId")?.toInt() ?: 0
             val encodedFullName = backStackEntry.arguments?.getString("fullName") ?: ""
             val encodedComment = backStackEntry.arguments?.getString("comment") ?: ""
+            val encodedDietRecommendation = backStackEntry.arguments?.getString("dietRecommendation") ?: ""
             val encodedResultFiles = backStackEntry.arguments?.getString("resultFiles") ?: ""
             val encodedExamDate = backStackEntry.arguments?.getString("examDate") ?: ""
 
             // Decode URL encoded strings
             val fullName = URLDecoder.decode(encodedFullName, StandardCharsets.UTF_8.toString())
             val comment = URLDecoder.decode(encodedComment, StandardCharsets.UTF_8.toString())
+            val dietRecommendation = URLDecoder.decode(encodedDietRecommendation, StandardCharsets.UTF_8.toString()).takeIf { it.isNotEmpty() }
             val examDate = URLDecoder.decode(encodedExamDate, StandardCharsets.UTF_8.toString())
             val resultFilesJson = URLDecoder.decode(encodedResultFiles, StandardCharsets.UTF_8.toString())
 
@@ -234,6 +236,7 @@ fun AppnavHost(
                 appointmentId = appointmentId,
                 fullName = fullName,
                 comment = comment,
+                dietRecommendation = dietRecommendation,
                 resultFiles = resultFiles,
                 examDate = examDate,
             )

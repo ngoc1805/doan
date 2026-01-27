@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -56,6 +57,7 @@ fun ExaminationResultScreen(
     appointmentId: Int,
     fullName: String,
     comment: String,
+    dietRecommendation: String?,
     resultFiles: List<ResultFileItem>,
     examDate: String,
     onClicked: () -> Unit = {},
@@ -209,6 +211,61 @@ fun ExaminationResultScreen(
                     }
                 }
             }
+
+            // Dietary Recommendation Section
+            if (!dietRecommendation.isNullOrEmpty()) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = (16 * scale).dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = (6 * scale).dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        shape = RoundedCornerShape((12 * scale).dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding((20 * scale).dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = (12 * scale).dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_restaurant_menu_24),
+                                    contentDescription = "Diet",
+                                    tint = Color(0xFFEA580C),
+                                    modifier = Modifier.size((20 * scale).dp)
+                                )
+                                Spacer(modifier = Modifier.width((12 * scale).dp))
+                                Text(
+                                    text = "Chỉ định ăn uống",
+                                    fontSize = (18 * scale).sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFFEA580C)
+                                )
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        Color(0xFFFFF7ED),
+                                        RoundedCornerShape((8 * scale).dp)
+                                    )
+                                    .padding((16 * scale).dp)
+                            ) {
+                                Text(
+                                    text = dietRecommendation,
+                                    fontSize = (14 * scale).sp,
+                                    color = Color.Black,
+                                    lineHeight = (20 * scale).sp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
 
             // Files Section
             if (resultFiles.isNotEmpty()) {

@@ -14,6 +14,7 @@ data class ResultItem(
     val appointmentId: Int,
     val fullName: String,
     val comment: String,
+    val dietRecommendation: String?,
     val resultFiles : List<ResultFileItem>,
     val examDate: String
 )
