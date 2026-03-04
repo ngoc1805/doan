@@ -15,12 +15,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -44,11 +42,10 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
-fun ChatPage(navController: NavController) {
+fun ChatPageWithMemory(navController: NavController) {
     val context = LocalContext.current
     val chatViewModel = remember { ChatViewModel(context) }
 
-    // Gradient background
     val gradientColors = listOf(
         Color(0xFFF5F7FA),
         Color(0xFFE8EAF6),
@@ -58,27 +55,32 @@ fun ChatPage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(gradientColors)
-            )
+            .background(brush = Brush.verticalGradient(gradientColors))
     ) {
-        // Enhanced AppBar
-        AppBarView(
-            title = "Trò chuyện cùng AI",
-            color = R.color.white,
-            backgroundColor = R.color.darkblue,
-            alignment = Alignment.Center,
-            isVisible = true,
-            onDeleteNavClicked = { navController.navigate("MainScreen/0") }
-        )
+        // AppBar với memory indicator
+        Column {
+            AppBarView(
+                title = "Trò chuyện cùng AI",
+                color = R.color.white,
+                backgroundColor = R.color.darkblue,
+                alignment = Alignment.Center,
+                isVisible = true,
+                onDeleteNavClicked = { navController.navigate("MainScreen/0") }
+            )
 
-        // Messages area with enhanced styling
+            // Memory Context Indicator (ĐÃ SỬA: bỏ sessionId)
+            MemoryIndicator(
+                hasMemory = chatViewModel.hasMemoryContext
+            )
+        }
+
+        // Messages area
         MessageList(
             modifier = Modifier.weight(1f),
             messageList = chatViewModel.messageList
         )
 
-        // Enhanced message input
+        // Message input (ĐÃ XÓA: New Session Button)
         MessageInput(
             onMessageSend = { message ->
                 chatViewModel.sendMessage(message)
@@ -87,6 +89,46 @@ fun ChatPage(navController: NavController) {
     }
 }
 
+// ĐÃ SỬA: Bỏ parameter sessionId
+@Composable
+fun MemoryIndicator(hasMemory: Boolean) {
+    AnimatedVisibility(
+        visible = hasMemory,
+        enter = slideInVertically() + fadeIn(),
+        exit = slideOutVertically() + fadeOut()
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            shape = RoundedCornerShape(8.dp),
+            color = Color(0xFF10B981).copy(alpha = 0.1f)
+        ) {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = "Memory",
+                    tint = Color(0xFF10B981),
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Bot đang nhớ ngữ cảnh cuộc trò chuyện của bạn",
+                    fontSize = 12.sp,
+                    color = Color(0xFF10B981),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    }
+}
+
+// ĐÃ XÓA: NewSessionButton - không cần nữa vì chỉ có 1 session duy nhất
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageInput(onMessageSend: (String) -> Unit) {
@@ -94,7 +136,6 @@ fun MessageInput(onMessageSend: (String) -> Unit) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
 
-    // Animation for send button
     val sendButtonScale by animateFloatAsState(
         targetValue = if (message.isNotEmpty()) 1f else 0.8f,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
@@ -149,34 +190,31 @@ fun MessageInput(onMessageSend: (String) -> Unit) {
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            // Enhanced send button with animation
             Box(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(CircleShape)
                     .background(
-                        brush = if (message.isNotEmpty()) {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF6366F1),
-                                    Color(0xFF8B5CF6)
-                                )
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFF8B5CF6),
+                                Color(0xFF6366F1)
                             )
-                        } else {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color.Gray.copy(alpha = 0.3f),
-                                    Color.Gray.copy(alpha = 0.3f)
-                                )
-                            )
+                        )
+                    )
+                    .clickable(
+                        enabled = message.isNotEmpty(),
+                        onClick = {
+                            if (message.isNotEmpty()) {
+                                onMessageSend(message)
+                                message = ""
+                                keyboardController?.hide()
+                            }
                         }
                     )
-                    .clickable(enabled = message.isNotEmpty()) {
-                        coroutineScope.launch {
-                            onMessageSend(message)
-                            message = ""
-                            keyboardController?.hide()
-                        }
+                    .graphicsLayer {
+                        scaleX = sendButtonScale
+                        scaleY = sendButtonScale
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -184,9 +222,7 @@ fun MessageInput(onMessageSend: (String) -> Unit) {
                     imageVector = Icons.Default.Send,
                     contentDescription = "Send",
                     tint = Color.White,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer(scaleX = sendButtonScale, scaleY = sendButtonScale)
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
@@ -202,7 +238,6 @@ fun MessageList(
 ) {
     val listState = rememberLazyListState()
 
-    // Auto scroll to bottom when new message arrives
     LaunchedEffect(messageList.size) {
         if (messageList.isNotEmpty()) {
             listState.animateScrollToItem(0)
@@ -247,7 +282,6 @@ fun EmptyMessageState(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Animated AI icon
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -282,7 +316,7 @@ fun EmptyMessageState(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Hãy hỏi tôi bất kỳ điều gì bạn muốn biết!",
+            text = "Tôi có trí nhớ và sẽ nhớ những gì bạn nói!\nHãy hỏi tôi bất kỳ điều gì bạn muốn biết!",
             fontSize = 16.sp,
             color = Color(0xFF6B7280),
             textAlign = TextAlign.Center,
@@ -291,7 +325,6 @@ fun EmptyMessageState(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Suggested questions
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -332,7 +365,7 @@ fun AnimatedMessageRow(messageModel: MessageModel) {
     var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        delay(50) // Small delay for staggered animation
+        delay(50)
         isVisible = true
     }
 
@@ -356,7 +389,6 @@ fun MessageRow(messageModel: MessageModel) {
         horizontalArrangement = if (isModel) Arrangement.Start else Arrangement.End
     ) {
         if (isModel) {
-            // AI Avatar
             Box(
                 modifier = Modifier
                     .size(32.dp)
@@ -382,7 +414,6 @@ fun MessageRow(messageModel: MessageModel) {
             Spacer(modifier = Modifier.width(8.dp))
         }
 
-        // Message bubble
         Card(
             modifier = Modifier.widthIn(max = 280.dp),
             shape = RoundedCornerShape(
@@ -415,7 +446,6 @@ fun MessageRow(messageModel: MessageModel) {
         if (!isModel) {
             Spacer(modifier = Modifier.width(8.dp))
 
-            // User Avatar
             Box(
                 modifier = Modifier
                     .size(32.dp)

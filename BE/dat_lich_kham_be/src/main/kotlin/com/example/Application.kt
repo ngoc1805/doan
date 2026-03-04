@@ -51,7 +51,14 @@ fun Application.module() {
             Menus,
             Orders,
             OrderItem,
-            Transactions
+            Transactions,
+            MealSubscriptionCycles,
+            MealSkipDates,
+            ChatSessions,
+            ChatMessages,
+            TempMemories,
+            ChatMemories,
+            ChatMemoriesIndex
         )
     }
 

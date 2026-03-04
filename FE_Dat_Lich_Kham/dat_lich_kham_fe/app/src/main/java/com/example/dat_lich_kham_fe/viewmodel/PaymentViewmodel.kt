@@ -1,6 +1,7 @@
 package com.example.dat_lich_kham_fe.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dat_lich_kham_fe.data.model.DepositDetails
@@ -212,5 +213,46 @@ class PaymentViewModel(
     // Reset state
     fun resetState() {
         _uiState.value = PaymentUiState()
+    }
+
+    // Pay for meal cycle
+    fun payMeal(userId: Int, cycleId: Int, amount: Int, onSuccess: () -> Unit = {}, onError: (String) -> Unit = {}) {
+        viewModelScope.launch {
+            try {
+                Log.d("PaymentViewModel", "🔵 Calling paymentMeal API - userId: $userId, cycleId: $cycleId, amount: $amount")
+
+                val response = paymentRepository.paymentMeal(userId, cycleId, amount)
+
+                Log.d("PaymentViewModel", "📥 Response received - isSuccessful: ${response.isSuccessful}, code: ${response.code()}")
+
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    Log.d("PaymentViewModel", "📦 Response body - success: ${body?.success}, message: ${body?.message}")
+
+                    if (body?.success == true) {
+                        Log.d("PaymentViewModel", "✅ Payment successful!")
+                        onSuccess()
+                    } else {
+                        val errorMsg = body?.message ?: "Thanh toán suất ăn thất bại"
+                        Log.e("PaymentViewModel", "❌ Payment failed: $errorMsg")
+                        onError(errorMsg)
+                    }
+                } else {
+                    val errorMsg = when (response.code()) {
+                        400 -> "Số dư không đủ hoặc dữ liệu không hợp lệ"
+                        404 -> "Không tìm thấy chu kỳ suất ăn"
+                        500 -> "Lỗi server, vui lòng thử lại"
+                        else -> "Lỗi kết nối: ${response.code()}"
+                    }
+                    Log.e("PaymentViewModel", "❌ HTTP Error ${response.code()}: $errorMsg")
+                    onError(errorMsg)
+                }
+            } catch (e: Exception) {
+                val errorMsg = "Lỗi: ${e.message ?: "Không thể kết nối đến server"}"
+                Log.e("PaymentViewModel", "💥 Exception: $errorMsg", e)
+                e.printStackTrace()
+                onError(errorMsg)
+            }
+        }
     }
 }

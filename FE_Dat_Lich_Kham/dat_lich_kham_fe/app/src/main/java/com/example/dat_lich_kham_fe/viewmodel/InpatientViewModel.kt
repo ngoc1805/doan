@@ -17,6 +17,13 @@ class InpatientViewModel(private val context: Context) : ViewModel() {
     private val _addressResult = MutableStateFlow<String?>(null)
     val addressResult: StateFlow<String?> get() = _addressResult
 
+    private val _currentInpatient = MutableStateFlow<com.example.dat_lich_kham_fe.data.model.InpatientItem?>(null)
+    val currentInpatient: StateFlow<com.example.dat_lich_kham_fe.data.model.InpatientItem?> get() = _currentInpatient
+
+    // Add missing inpatientHistory StateFlow
+    private val _inpatientHistory = MutableStateFlow<List<com.example.dat_lich_kham_fe.data.model.InpatientItem>>(emptyList())
+    val inpatientHistory: StateFlow<List<com.example.dat_lich_kham_fe.data.model.InpatientItem>> get() = _inpatientHistory
+
     fun checkAdmitted(userId: Int) {
         viewModelScope.launch {
             val result = inpatientRepository.checkAdmitted(userId)
@@ -28,6 +35,21 @@ class InpatientViewModel(private val context: Context) : ViewModel() {
         viewModelScope.launch {
             val result = inpatientRepository.getAddress(userId)
             _addressResult.value = result
+        }
+    }
+
+    fun getCurrentInpatient(userId: Int) {
+        viewModelScope.launch {
+            val result = inpatientRepository.getCurrentInpatient(userId)
+            _currentInpatient.value = result
+        }
+    }
+
+    // Add missing getInpatientHistory function
+    fun getInpatientHistory(userId: Int) {
+        viewModelScope.launch {
+            val result = inpatientRepository.getInpatientHistory(userId)
+            _inpatientHistory.value = result ?: emptyList()
         }
     }
 }

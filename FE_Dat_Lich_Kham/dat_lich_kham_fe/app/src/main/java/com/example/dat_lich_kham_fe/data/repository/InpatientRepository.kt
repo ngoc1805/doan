@@ -2,6 +2,7 @@ package com.example.dat_lich_kham_fe.data.repository
 
 import android.content.Context
 import com.example.dat_lich_kham_fe.data.api.RetrofitInstance
+import com.example.dat_lich_kham_fe.data.model.InpatientItem
 
 class InpatientRepository(private val context: Context) {
     private val inpatientApi = RetrofitInstance.inpatientApi(context)
@@ -20,5 +21,32 @@ class InpatientRepository(private val context: Context) {
             return response.body()?.string()
         }
         return ""
+    }
+
+    suspend fun getCurrentInpatient(userId: Int): com.example.dat_lich_kham_fe.data.model.InpatientItem? {
+        return try {
+            val response = inpatientApi.getCurrentInpatient(userId)
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+    suspend fun getInpatientHistory(userId: Int): List<InpatientItem>? {
+        return try {
+            val response = inpatientApi.getInpatientHistory(userId)
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

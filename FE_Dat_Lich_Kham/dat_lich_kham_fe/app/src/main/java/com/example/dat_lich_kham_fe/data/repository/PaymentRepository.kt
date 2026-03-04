@@ -5,6 +5,7 @@ import com.example.dat_lich_kham_fe.data.api.PaymentApi
 import com.example.dat_lich_kham_fe.data.api.RetrofitInstance
 import com.example.dat_lich_kham_fe.data.model.BaseResponse
 import com.example.dat_lich_kham_fe.data.model.DepositPaymentRequest
+import com.example.dat_lich_kham_fe.data.model.MealPaymentRequest
 import com.example.dat_lich_kham_fe.data.model.PaymentRequest
 import com.example.dat_lich_kham_fe.data.model.RefundDepositRequest
 import retrofit2.Response
@@ -52,5 +53,19 @@ class PaymentRepository(private val context: Context) {
     // Lấy message từ response
     fun getResponseMessage(response: Response<BaseResponse>): String {
         return response.body()?.message ?: "Có lỗi xảy ra"
+    }
+
+    suspend fun paymentMeal(userId: Int, cycleId: Int, amount: Int): Response<BaseResponse> {
+        return try {
+            paymentApi.paymentMeal(
+                MealPaymentRequest(
+                    userId = userId,
+                    cycleId = cycleId,
+                    amount = amount
+                )
+            )
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }

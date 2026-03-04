@@ -159,11 +159,17 @@ fun ButtonGrid(navController: NavController){
             .padding(horizontal = (16 * divideAndRound(screenWidthValue)).dp),
         horizontalArrangement = Arrangement.spacedBy((8 * divideAndRound(screenWidthValue)).dp)
     ) {
+//        CustomButtons(
+//            icon = painterResource(id = R.drawable.meal),
+//            text = stringResource(id = R.string.order_a_meal),
+//            modifier = Modifier.weight(1f),
+//            onNavClicked = {navController.navigate("OrderMealScreen")}
+//        )
         CustomButtons(
             icon = painterResource(id = R.drawable.meal),
-            text = stringResource(id = R.string.order_a_meal),
+            text = "Nội trú",
             modifier = Modifier.weight(1f),
-            onNavClicked = {navController.navigate("OrderMealScreen")}
+            onNavClicked = {navController.navigate("InpatientMealScreen")}
         )
         CustomButtons(
             icon = painterResource(id = R.drawable.bot),

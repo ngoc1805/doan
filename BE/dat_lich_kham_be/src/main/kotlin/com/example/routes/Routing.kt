@@ -25,6 +25,22 @@ fun Application.configureRouting(
     val accountRepository = AccountRepository()
     val userRepository = UserRepository()
     val userService = UserService(userRepository)
+    val mealRepository = MealRepository()
+    val mealService = MealService(mealRepository)
+    val chatService = ChatService()
+    val geminiService = GeminiService("AIzaSyDuvJdihXpY3GxVLMase6j60mgoTs5re2Q")
+
+    // AI Chat với Function Calling
+    val aiGeminiService = GeminiServiceWithFunctions("AIzaSyDuvJdihXpY3GxVLMase6j60mgoTs5re2Q")
+    val departmentRepo = DepartmentRepository()
+    val doctorRepo = DoctorRepository()
+    val appointmentRepo = AppointmentRepository()
+    val bookingExecutor = BookingFunctionExecutor(
+        departmentRepo = departmentRepo,
+        doctorRepo = doctorRepo,
+        appointmentRepo = appointmentRepo
+    )
+
     routing {
         // Health check
         get("/") {
@@ -58,6 +74,8 @@ fun Application.configureRouting(
         pinRoutes(accountRepository, userService)
         forgotPasswordRoutes(accountRepository)
         publicFileRoute()
+        chatRoutes(chatService, geminiService)
+        aiChatRoutes(chatService, aiGeminiService, bookingExecutor) // ← AI Chat mới với Function Calling
         authenticate("auth-jwt"){
             withRoleAuthorization {
                 adminRoutes()
@@ -75,6 +93,9 @@ fun Application.configureRouting(
                 appointmentPaymentRoute()
                 transactionRoutes()
                 depositPaymentRoute()
+                mealPaymentRoute() // Added this line
+                mealRoutes(mealService)
+                adminMealStatisticsRoutes(mealService)
             }
         }
 

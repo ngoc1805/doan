@@ -55,6 +55,8 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     //
     implementation("io.lettuce:lettuce-core:6.3.0.RELEASE")
+    //
+    implementation("com.charleskorn.kaml:kaml:0.55.0")
 
 
     implementation(libs.ktor.server.cors)

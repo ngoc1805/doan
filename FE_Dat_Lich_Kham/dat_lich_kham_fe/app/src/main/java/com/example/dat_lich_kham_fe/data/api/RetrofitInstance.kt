@@ -61,4 +61,6 @@ object RetrofitInstance {
         getInstance(context).create(PaymentApi::class.java)
     fun transactionApi(context: Context): TransactionApi =
         getInstance(context).create(TransactionApi::class.java)
+    fun getMealApi(context: Context): MealApi =
+        getInstance(context).create(MealApi::class.java)
 }

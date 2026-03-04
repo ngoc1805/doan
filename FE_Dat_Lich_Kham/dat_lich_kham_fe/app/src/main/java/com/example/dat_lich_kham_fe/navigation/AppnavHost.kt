@@ -9,7 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.dat_lich_kham_fe.chatbot.ChatPage
+import com.example.dat_lich_kham_fe.chatbot.ChatPageWithMemory
 import com.example.dat_lich_kham_fe.data.model.OrderItemDetail
 import com.example.dat_lich_kham_fe.data.model.ResultFileItem
 import com.example.dat_lich_kham_fe.ui.components.GlobalSessionExpiredDialog
@@ -28,8 +28,10 @@ import com.example.dat_lich_kham_fe.ui.screen.HealthIndex
 import com.example.dat_lich_kham_fe.ui.screen.HealthRecordScreen
 import com.example.dat_lich_kham_fe.ui.screen.HistoryScreen
 import com.example.dat_lich_kham_fe.ui.screen.InFoScreen
+import com.example.dat_lich_kham_fe.ui.screen.InpatientMealScreen
 import com.example.dat_lich_kham_fe.ui.screen.Login_RegisterScreen
 import com.example.dat_lich_kham_fe.ui.screen.MainScreen
+import com.example.dat_lich_kham_fe.ui.screen.MealPaymentScreen
 import com.example.dat_lich_kham_fe.ui.screen.MedicalExaminationScreen
 import com.example.dat_lich_kham_fe.ui.screen.NotificationScreen
 import com.example.dat_lich_kham_fe.ui.screen.OrderConfirmationScreen
@@ -265,7 +267,15 @@ fun AppnavHost(
         }
         //
         composable("ChatPage") {
-            ChatPage(navController)
+            ChatPageWithMemory(navController)
+        }
+        composable("InpatientMealScreen") {
+            InpatientMealScreen(navController)
+        }
+        composable("MealPaymentScreen/{cycleId}/{inpatientId}") { backStackEntry ->
+            val cycleId = backStackEntry.arguments?.getString("cycleId")?.toIntOrNull() ?: 0
+            val inpatientId = backStackEntry.arguments?.getString("inpatientId")?.toIntOrNull() ?: 0
+            MealPaymentScreen(navController, cycleId, inpatientId)
         }
         composable("OrderMealScreen") {
             OrderMealScreen(navController)
