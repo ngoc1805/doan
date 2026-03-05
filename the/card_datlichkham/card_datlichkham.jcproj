@@ -1,0 +1,13 @@
+<JavaCardProject name="card_datlichkham">
+<USER>
+<PKG name="card" aid="11 22 33 44 55" major="1" minor="0">
+<APPLET aid="11 22 33 44 55 00" instanceaid="" parameter="" authority="" privileges="" index="-27464" name="card"/>
+<CLASS name="PIN"/>
+<CLASS name="PBKDF2"/>
+<CLASS name="Avatar"/>
+<CLASS name="CardModel"/>
+<CLASS name="HospitalCard"/>
+</PKG>
+<Libs/>
+</USER>
+</JavaCardProject>
